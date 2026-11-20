@@ -15,7 +15,9 @@ from sklearn.model_selection import KFold
 
 SMOKE = False       # True时只取set<=2的20句，用来验证代码能跑通
 
-SETS = ["S1_1P", "S2_1P", "S2_3P"]
+SETS = ["S1_1P", "S2_1P", "S2_3P",
+        "ControlSupplement_1P", "Arousal_1P", "Random_1P", "Numb_1P"]
+PAIN_SETS = ["S1_1P", "S2_1P", "S2_3P"] 
 config.RUN_DIR.mkdir(parents=True, exist_ok=True)
 
 model = acts.load_model()
@@ -33,8 +35,9 @@ for name in SETS:
         categories = [categories[i] for i in keep]
         sets = [sets[i] for i in keep]
     print(f"{name}: {len(prompts)} 句")
-    assert set(categories) >= set(config.PAIN_CATEGORIES + config.CONTROL_CATEGORIES), \
-    f"切片后只剩 {sorted(set(categories))}，缺对照类，算不出 pain vector"
+    if name in PAIN_SETS:
+        assert set(categories) >= set(config.PAIN_CATEGORIES + config.CONTROL_CATEGORIES), \
+        f"切片后只剩 {sorted(set(categories))}，缺对照类，算不出 pain vector"
 
     a_final, a_mean = acts.extract_activations(model, prompts)
     all_acts["final_token"][name] = a_final
@@ -61,7 +64,7 @@ N_FOLDS = 5
 rows = []
 for L in range(n_layers):
     row = {"layer": L}
-    for name in SETS:
+    for name in PAIN_SETS:
         acts_np = all_acts[EXT][name][L].numpy()
         cats = np.array(all_meta[name]["categories"])
         sets = np.array(all_meta[name]["sets"])
