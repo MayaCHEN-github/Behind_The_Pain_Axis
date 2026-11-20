@@ -1,0 +1,7 @@
+Loaded pretrained model google/gemma-2-2b-it into HookedTransformer
+n_layers=26  d_model=2304
+S1_1P: 200 句
+S2_1P: 200 句
+
+最佳层 = 23  (参考值 25)
+该层 S2 AUC = 0.9941

@@ -1,1 +1,10 @@
+# --- AI 助手，用于brainstorming与技术指导。此项目代码尽可能不使用AI Coding完成。 ---
+CLAUDE.md
+# --- Private / 实验指导材料 ---
 Materials/
+
+# --- 复现产物与本机噪声 ---
+*.pt
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
